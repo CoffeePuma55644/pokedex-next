@@ -1,17 +1,17 @@
 export default function Hero() {
     return(
-              <div className="hero min-h-[calc(100vh-4rem)] bg-gradient-to-br from-base-200 via-base-100 to-base-200">
+              <div className="hero min-h-[calc(100vh-4rem)] bg-linear-to-br from-base-200 via-base-100 to-base-200">
         <div className="hero-content text-center">
           <div className="max-w-4xl">
             <div className="mb-8">
-              <div className="inline-block p-6 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full shadow-2xl animate-pulse">
+              <div className="inline-block p-6 bg-linear-to-br from-primary/20 to-secondary/20 rounded-full shadow-2xl animate-pulse">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
             </div>
             
-            <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Bienvenue dans le Pokédex
             </h1>
             
