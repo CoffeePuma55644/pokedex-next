@@ -1,3 +1,5 @@
+import { Search, BarChart3, Repeat2 } from "lucide-react";
+
 export default function Feature() {
     return(
             <div className="py-20 bg-base-200">
@@ -9,7 +11,9 @@ export default function Feature() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
               <div className="card-body">
-                <div className="text-primary text-4xl mb-4">🔍</div>
+                <div className="text-primary mb-4">
+                  <Search className="w-12 h-12" />
+                </div>
                 <h3 className="card-title">Recherche avancée</h3>
                 <p>Trouvez n&apos;importe quel Pokémon par nom, numéro ou type avec notre système de recherche intelligent.</p>
               </div>
@@ -17,7 +21,9 @@ export default function Feature() {
 
             <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
               <div className="card-body">
-                <div className="text-secondary text-4xl mb-4">📊</div>
+                <div className="text-secondary mb-4">
+                  <BarChart3 className="w-12 h-12" />
+                </div>
                 <h3 className="card-title">Statistiques détaillées</h3>
                 <p>Consultez toutes les stats, capacités, et informations essentielles de chaque Pokémon.</p>
               </div>
@@ -25,7 +31,9 @@ export default function Feature() {
 
             <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
               <div className="card-body">
-                <div className="text-accent text-4xl mb-4">🔄</div>
+                <div className="text-accent mb-4">
+                  <Repeat2 className="w-12 h-12" />
+                </div>
                 <h3 className="card-title">Évolutions</h3>
                 <p>Découvrez les chaînes d&apos;évolution complètes et les conditions requises.</p>
               </div>
