@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Pokédex - Explorez le monde des Pokémon",
-  description: "Découvrez tous les Pokémon, leurs statistiques, évolutions et capacités dans ce Pokédex interactif",
+  description:
+    "Découvrez tous les Pokémon, leurs statistiques, évolutions et capacités dans ce Pokédex interactif",
 };
 
 export default function RootLayout({
@@ -29,6 +31,7 @@ export default function RootLayout({
       >
         {children}
       </body>
+      <Analytics />
     </html>
   );
 }
