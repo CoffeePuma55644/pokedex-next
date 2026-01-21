@@ -10,7 +10,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Feature />
-      {/* <PokemonCard /> Je dois faire en sorte que les liens d'images soient permis par Next*/}
+      <PokemonCard />
       <Footer />
     </div>
   );
