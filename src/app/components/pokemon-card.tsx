@@ -15,7 +15,7 @@ export default function PokemonCard({
   const imageUrl =
     pokemon.sprites.other?.["official-artwork"]?.front_default ||
     pokemon.sprites.front_default ||
-    "/images/placeholder.webp";
+    "/images/bulbizard.webp";
 
   const primaryType = pokemon.types[0]?.type.name || "normal";
   const badgeColor = TYPE_COLORS[primaryType] || "badge-neutral";
