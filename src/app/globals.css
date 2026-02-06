@@ -2,40 +2,36 @@
 @plugin "daisyui";
 
 @plugin "daisyui/theme" {
-    name: "pokedex-classic";
+    name: "catppuccin";
     default: true;
     prefersdark: true;
     color-scheme: "dark";
-
-    /* Fond inspiré des interfaces d'aventure (sombre mais teinté de bleu) */
-    --color-base-100: #1a1a1a; /* Noir profond pour le contraste */
-    --color-base-200: #2a2a2a; /* Gris foncé pour les cartes */
-    --color-base-300: #3c5aa6; /* Bleu Pokémon pour les surfaces secondaires [web:2] */
-    --color-base-content: #f0f0f0; /* Texte blanc cassé pour la lisibilité */
-
-    /* Couleurs de marque Pokémon */
-    --color-primary: #3b4cca; /* Le "Pokémon Blue" [web:3] */
-    --color-primary-content: #ffffff;
-
-    --color-secondary: #ffcb05; /* Le Jaune Pikachu officiel [web:5] */
-    --color-secondary-content: #11111b;
-
-    --color-accent: #ff0000; /* Le Rouge Pokédex classique [web:1] */
-    --color-accent-content: #ffffff;
-
-    /* États et Feedback */
-    --color-info: #2a75bb; /* Bleu clair pour les infos [web:2] */
-    --color-success: #4dad5b; /* Vert "PV max" */
-    --color-warning: #ffde00; /* Jaune alerte [web:3] */
-    --color-error: #cc0000; /* Rouge critique [web:1] */
-
-    /* Design system hardware (Nintendo Style) */
-    --radius-selector: 1rem; /* Arrondis plus marqués style console */
-    --radius-field: 0.75rem;
-    --radius-box: 1rem;
+    --color-base-100: #181825;
+    --color-base-200: #1e1e2e;
+    --color-base-300: #313244;
+    --color-base-content: #cdd6f4;
+    --color-primary: #89b4fa;
+    --color-primary-content: #11111b;
+    --color-secondary: #cba6f7;
+    --color-secondary-content: oklch(94% 0.028 342.258);
+    --color-accent: #f5c2e7;
+    --color-accent-content: oklch(38% 0.063 188.416);
+    --color-neutral: #74c7ec;
+    --color-neutral-content: #1e1e2e;
+    --color-info: #94e2d5;
+    --color-info-content: oklch(29% 0.066 243.157);
+    --color-success: #a6e3a1;
+    --color-success-content: oklch(37% 0.077 168.94);
+    --color-warning: #f9e2af;
+    --color-warning-content: oklch(41% 0.112 45.904);
+    --color-error: rgb(219 75 75);
+    --color-error-content: oklch(27% 0.105 12.094);
+    --radius-selector: 0.5rem;
+    --radius-field: 0.5rem;
+    --radius-box: 0.5rem;
     --size-selector: 0.25rem;
     --size-field: 0.25rem;
-    --border: 2px; /* Bordures légèrement plus épaisses */
-    --depth: 1; /* Un peu de relief pour le côté objet */
-    --noise: 0.05; /* Légère texture pour le côté rétro */
+    --border: 1.5px;
+    --depth: 0;
+    --noise: 0;
 }

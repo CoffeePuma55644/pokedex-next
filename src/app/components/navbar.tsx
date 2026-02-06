@@ -10,21 +10,20 @@ export default function Navbar() {
                         <Menu className="h-5 w-5" />
                     </div>
                     <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                        <li><a>Pokédex</a></li>
+                        <li><Link href="/pokedex">Pokédex</Link></li>
                         <li><a>Types</a></li>
                         <li><a>Générations</a></li>
                     </ul>
                 </div>
-                {/*<Link href={"./"}>*/}
+                <Link href="/">
                     <h1 className="btn btn-ghost text-xl font-bold">
-                        <p className="text-primary">Poké<span className="text-secondary">dex</span>
-                        </p>
+                        <p className="text-primary">Poké<span className="text-secondary">dex</span></p>
                     </h1>
-                {/*</Link>*/}
+                </Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
-                    <li><a className="hover:text-primary transition-colors">Pokédex</a></li>
+                    <li><Link href="/pokedex" className="hover:text-primary transition-colors">Pokédex</Link></li>
                     <li><a className="hover:text-secondary transition-colors">Types</a></li>
                     <li><a className="hover:text-accent transition-colors">Générations</a></li>
                 </ul>
