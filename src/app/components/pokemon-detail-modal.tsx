@@ -39,9 +39,12 @@ export default function PokemonDetailModal({
         <dialog id="pokemon-modal" className="modal modal-open modal-middle">
           <div className="modal-box w-11/12 max-w-md">
             {/* Close button */}
-            <form method="dialog" className="absolute top-4 right-4">
-              <button className="btn btn-sm btn-circle btn-ghost">✕</button>
-            </form>
+            <button
+              onClick={onClose}
+              className="btn btn-sm btn-circle btn-ghost absolute top-4 right-4"
+            >
+              ✕
+            </button>
 
             {/* Image */}
             <div className="flex justify-center mb-4">
@@ -117,16 +120,15 @@ export default function PokemonDetailModal({
 
             {/* Close action */}
             <div className="modal-action">
-              <form method="dialog">
-                <button className="btn btn-primary w-full">Close</button>
-              </form>
+              <button onClick={onClose} className="btn btn-primary w-full">
+                Close
+              </button>
             </div>
           </div>
 
           {/* Backdrop */}
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
+          <div onClick={onClose} className="modal-backdrop">
+          </div>
         </dialog>
       )}
     </>
