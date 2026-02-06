@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
 
 export const metadata: Metadata = {
   title: "Pokédex - Explorez le monde des Pokémon",
@@ -16,7 +18,11 @@ export default function RootLayout({
   return (
     <html lang="fr" data-theme="catppuccin">
       <body className="antialiased">
-        {children}
+        <Navbar />
+        <main className="min-h-screen">
+          {children}
+        </main>
+        <Footer />
       </body>
       <Analytics />
     </html>

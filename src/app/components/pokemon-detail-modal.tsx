@@ -19,7 +19,7 @@ export default function PokemonDetailModal({
   const imageUrl =
     pokemon.sprites.other?.["official-artwork"]?.front_default ||
     pokemon.sprites.front_default ||
-    "/images/placeholder.webp";
+    "/images/bulbizard.webp";
 
   const getPrimaryType = () => {
     return pokemon.types[0]?.type.name || "normal";
