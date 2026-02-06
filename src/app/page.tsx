@@ -2,7 +2,6 @@ import Feature from "./components/feature";
 import Footer from "./components/footer";
 import Hero from "./components/hero";
 import Navbar from "./components/navbar";
-import PokemonCard from "./components/pokemon-card";
 
 export default function Home() {
   return (
@@ -10,8 +9,8 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Feature />
-      <PokemonCard />
       <Footer />
     </div>
   );
 }
+
