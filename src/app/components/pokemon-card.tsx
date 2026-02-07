@@ -8,10 +8,7 @@ interface PokemonCardProps {
   onClick: (pokemon: Pokemon) => void;
 }
 
-export default function PokemonCard({
-  pokemon,
-  onClick,
-}: PokemonCardProps) {
+export default function PokemonCard({ pokemon, onClick }: PokemonCardProps) {
   const imageUrl =
     pokemon.sprites.other?.["official-artwork"]?.front_default ||
     pokemon.sprites.front_default ||
@@ -38,7 +35,7 @@ export default function PokemonCard({
       </figure>
 
       {/* Overlay avec infos */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b-2xl text-white">
+      <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-4 rounded-b-2xl text-white">
         {/* Nom et ID */}
         <h3 className="text-lg font-bold capitalize">
           {pokemon.name}
