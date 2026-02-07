@@ -1,4 +1,4 @@
-import { Pokemon, PokemonListResponse, PokemonListItem } from "@/types/pokemon";
+import { Pokemon, PokemonListResponse, PokemonListItem, PokemonIndexItem } from "@/types/pokemon";
 
 const POKE_API_BASE = "https://pokeapi.co/api/v2";
 
@@ -89,6 +89,45 @@ export async function fetchPokemonDetails(
 ): Promise<Pokemon> {
   const url = `${POKE_API_BASE}/pokemon/${idOrName}`;
   return fetchFromAPI<Pokemon>(url);
+}
+
+/**
+ * Fetch tous les noms et IDs de Pokémon pour l'indexation (1350 approx)
+ */
+export async function fetchAllPokemonNames(): Promise<PokemonIndexItem[]> {
+  const url = `${POKE_API_BASE}/pokemon?limit=2000&offset=0`;
+  const data = await fetchFromAPI<PokemonListResponse>(url);
+  
+  return data.results.map((item) => {
+    // Extraire l'ID de l'URL: https://pokeapi.co/api/v2/pokemon/1/
+    const id = parseInt(item.url.split("/").filter(Boolean).pop() || "0");
+    return { id, name: item.name };
+  });
+}
+
+/**
+ * Fetch les Pokémon d'un type spécifique
+ */
+export async function fetchPokemonsByType(typeName: string): Promise<PokemonListItem[]> {
+  const url = `${POKE_API_BASE}/type/${typeName}`;
+  const data = await fetchFromAPI<any>(url);
+  
+  return data.pokemon.map((item: any) => ({
+    name: item.pokemon.name,
+    url: item.pokemon.url
+  }));
+}
+
+/**
+ * Fetch tous les types disponibles
+ */
+export async function fetchAllTypes(): Promise<string[]> {
+  const url = `${POKE_API_BASE}/type`;
+  const data = await fetchFromAPI<any>(url);
+  
+  return data.results
+    .map((t: any) => t.name)
+    .filter((name: string) => !['unknown', 'stellar'].includes(name));
 }
 
 /**

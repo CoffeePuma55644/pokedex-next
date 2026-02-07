@@ -1,15 +1,14 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState } from "react";
+import { SearchIcon, Sparkles } from "lucide-react";
 import { Pokemon } from "@/types/pokemon";
-import {
-  fetchPokemons,
-  fetchMultiplePokemonsDetails,
-} from "@/services/pokemonApi";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { usePokemonSearch } from "@/hooks/usePokemonSearch";
+import { usePokemonPagination } from "@/hooks/usePokemonPagination";
+import { usePokemonIndex } from "@/hooks/usePokemonIndex";
 import PokemonCard from "./pokemon-card";
 import PokemonDetailModal from "./pokemon-detail-modal";
+import PokemonSearchModal from "./pokemon-search-modal";
+import Pagination from "./pagination";
 
 interface PokemonGridProps {
   initialPokemons: Pokemon[];
@@ -18,157 +17,141 @@ interface PokemonGridProps {
 export default function PokemonGrid({
   initialPokemons,
 }: PokemonGridProps) {
-  // State
-  const [pokemons, setPokemons] = useState<Pokemon[]>(initialPokemons);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [offset, setOffset] = useState(10); // Commençons à 10 car les 10 premiers sont déjà chargés
+  // Initialize Global Index
+  usePokemonIndex();
 
-  // Modal state
+  // Classic Pagination Hook
+  const {
+    currentPage,
+    totalPages,
+    pokemons,
+    totalCount,
+    isLoading,
+    error,
+    goToPage
+  } = usePokemonPagination(initialPokemons);
+
+  // Search Modal state
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [searchedPokemon, setSearchedPokemon] = useState<Pokemon | null>(null);
+
+  // Detail Modal state
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  // Filtre les Pokémon selon la recherche
-  const filteredPokemons = usePokemonSearch(pokemons, searchQuery);
-
-  // Fonction pour charger plus de Pokémon
-  const loadMorePokemons = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-
-    setIsLoading(true);
-    try {
-      const listResponse = await fetchPokemons(10, offset);
-      
-      if (listResponse.results.length === 0) {
-        setHasMore(false);
-        return;
-      }
-
-      const newPokemons = await fetchMultiplePokemonsDetails(
-        listResponse.results
-      );
-
-      setPokemons((prev) => [...prev, ...newPokemons]);
-      setOffset((prev) => prev + 10);
-
-      // Vérifier s'il y a d'autres Pokémon à charger
-      if (!listResponse.next) {
-        setHasMore(false);
-      }
-    } catch (error) {
-      console.error("Failed to load more pokemons:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [offset, isLoading, hasMore]);
-
-  // Hook pour infinite scroll
-  const observerTarget = useInfiniteScroll(loadMorePokemons, isLoading);
-
-  // Gestion de la recherche
-  const handleSearchChange = (query: string) => {
-    setSearchQuery(query);
-    // Réinitialiser le modal si ouvert
-    if (isModalOpen) {
-      setIsModalOpen(false);
-    }
-  };
-
-  // Gestion de l'ouverture de la modal
+  // Gestion de l'ouverture de la modal de détails
   const handleCardClick = (pokemon: Pokemon) => {
     setSelectedPokemon(pokemon);
-    setIsModalOpen(true);
+    setIsDetailModalOpen(true);
   };
 
-  // Gestion de la fermeture de la modal
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedPokemon(null);
+  // Gestion de la sélection depuis la recherche globale
+  const handleSelectFromSearch = (pokemon: Pokemon) => {
+    setSearchedPokemon(pokemon);
+    setIsSearchModalOpen(false);
+    
+    // On ouvre directement les détails du Pokémon trouvé
+    setSelectedPokemon(pokemon);
+    setIsDetailModalOpen(true);
   };
 
   return (
-    <>
-      {/* Barre de recherche */}
-      <div className="w-full max-w-md px-4 mx-auto mb-8">
-        <label className="input input-bordered flex items-center gap-2">
-          <svg
-            className="h-[1em] opacity-50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
+    <div className="flex flex-col items-center w-full">
+      {/* Search Trigger Section */}
+      <div className="w-full max-w-4xl px-4 mx-auto mb-12 space-y-4">
+        <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-base-200/50 p-6 rounded-3xl border border-primary/10 backdrop-blur-md">
+          <div className="space-y-1">
+            <h2 className="text-xl font-bold flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              Base de données mondiale
+            </h2>
+            <p className="text-sm text-base-content/60">
+              Explorez {totalCount || 1350}+ Pokémon par nom, ID ou type.
+            </p>
+          </div>
+          
+          <button 
+            onClick={() => setIsSearchModalOpen(true)}
+            className="btn btn-primary rounded-2xl gap-2 w-full md:w-auto px-8 shadow-lg shadow-primary/20 hover:scale-105 transition-all"
           >
-            <g
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2.5"
-              fill="none"
-              stroke="currentColor"
+            <SearchIcon className="w-5 h-5" />
+            Recherche Globale
+          </button>
+        </div>
+
+        {searchedPokemon && (
+          <div className="flex items-center justify-between p-3 px-5 bg-primary/10 rounded-xl border border-primary/20 animate-in slide-in-from-top-4 duration-300">
+            <div className="flex items-center gap-3">
+              <span className="flex h-3 w-3 rounded-full bg-primary animate-pulse"></span>
+              <p className="text-sm font-medium">
+                Dernier résultat trouvé : <span className="capitalize font-bold text-primary">{searchedPokemon.name}</span>
+              </p>
+            </div>
+            <button 
+              onClick={() => setSearchedPokemon(null)}
+              className="btn btn-ghost btn-xs btn-circle"
             >
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </g>
-          </svg>
-          <input
-            type="text"
-            className="grow"
-            placeholder="Rechercher un Pokémon..."
-            value={searchQuery}
-            onChange={(e) => handleSearchChange(e.target.value)}
-          />
-        </label>
+              <SearchIcon className="w-3 h-3" />
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Affichage du nombre de résultats */}
-      {searchQuery && (
-        <div className="text-center mb-4 text-sm text-gray-400">
-          {filteredPokemons.length} résultat(s) trouvé(s)
-        </div>
-      )}
-
-      {/* Grille de Pokémon */}
-      <div className="w-full px-4">
-        {filteredPokemons.length === 0 ? (
-          <div className="text-center py-8 text-gray-400">
-            {searchQuery
-              ? "Aucun Pokémon trouvé"
-              : "Chargement des Pokémon..."}
+      {/* Main Grid Section */}
+      <div className="w-full px-4 max-w-7xl mx-auto">
+        {isLoading && pokemons.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 space-y-4">
+            <span className="loading loading-spinner loading-xl text-primary"></span>
+            <p className="text-base-content/60 font-medium animate-pulse">Synchronisation avec le Pokédex...</p>
+          </div>
+        ) : error ? (
+          <div className="alert alert-error max-w-md mx-auto">
+            <span>Une erreur est survenue lors du chargement des Pokémon.</span>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-items-center">
-              {filteredPokemons.map((pokemon) => (
-                <PokemonCard
-                  key={pokemon.id}
-                  pokemon={pokemon}
-                  onClick={handleCardClick}
-                />
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 justify-items-center">
+              {pokemons.map((pokemon) => (
+                <div 
+                  key={pokemon.id} 
+                  className={`${searchedPokemon?.id === pokemon.id ? 'ring-4 ring-primary ring-offset-4 ring-offset-base-100 rounded-2xl scale-105 transition-all duration-500' : ''}`}
+                >
+                  <PokemonCard
+                    pokemon={pokemon}
+                    onClick={handleCardClick}
+                  />
+                </div>
               ))}
             </div>
 
-            {/* Infinite scroll trigger */}
-            {!searchQuery && hasMore && (
-              <div ref={observerTarget} className="h-10 flex justify-center mt-8">
-                {isLoading && (
-                  <span className="loading loading-spinner loading-lg text-primary"></span>
-                )}
-              </div>
-            )}
-
-            {!hasMore && (
-              <div className="text-center py-8 text-gray-400">
-                Tous les Pokémon ont été chargés
-              </div>
-            )}
+            {/* Pagination Controls */}
+            <div className="mt-12">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={goToPage}
+                isLoading={isLoading}
+              />
+            </div>
           </>
         )}
       </div>
 
-      {/* Modal */}
+      {/* Modals */}
+      <PokemonSearchModal
+        isOpen={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
+        onSelectPokemon={handleSelectFromSearch}
+      />
+
       <PokemonDetailModal
         pokemon={selectedPokemon}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        isOpen={isDetailModalOpen}
+        onClose={() => {
+          setIsDetailModalOpen(false);
+          setSelectedPokemon(null);
+        }}
       />
-    </>
+    </div>
   );
 }

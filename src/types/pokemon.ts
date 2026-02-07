@@ -49,6 +49,25 @@ export interface PokemonListResponse {
   results: PokemonListItem[];
 }
 
+export interface PokemonIndexItem {
+  id: number;
+  name: string;
+}
+
+export interface SearchResult extends PokemonIndexItem {
+  score?: number;
+  matchType: 'name' | 'id' | 'type';
+}
+
+export interface SearchState {
+  query: string;
+  type: 'name' | 'id' | 'type';
+  results: Pokemon[];
+  totalResults: number;
+  isSearching: boolean;
+  currentPage: number;
+}
+
 // Type mapping for Pokemon types to badge colors
 export const TYPE_COLORS: Record<string, string> = {
   normal: "badge-neutral",
