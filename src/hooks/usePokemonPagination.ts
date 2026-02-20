@@ -20,6 +20,9 @@ export function usePokemonPagination(initialPokemons?: Pokemon[]) {
 
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
+  // loadPage is responsible for fetching data only.
+  // URL updates are handled separately by goToPage to avoid an infinite loop:
+  // router.push → searchParams changes → loadPage recreated → useEffect re-runs → router.push → ...
   const loadPage = useCallback(async (page: number) => {
     try {
       setIsLoading(true);
@@ -32,18 +35,13 @@ export function usePokemonPagination(initialPokemons?: Pokemon[]) {
       
       const details = await fetchMultiplePokemonsDetails(response.results);
       setPokemons(details);
-      
-      // Update URL without refresh
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("page", page.toString());
-      router.push(`?${params.toString()}`, { scroll: true });
     } catch (err) {
       setError(err as Error);
       console.error("Failed to load page:", err);
     } finally {
       setIsLoading(false);
     }
-  }, [router, searchParams]);
+  }, []);
 
   useEffect(() => {
     const page = pageParam ? parseInt(pageParam) : 1;
