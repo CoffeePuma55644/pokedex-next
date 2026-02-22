@@ -1,3 +1,7 @@
 export default function Loading() {
-  <div className="skeleton h-32 w-32"></div>;
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <span className="loading loading-bars loading-xl"></span>
+    </div>
+  );
 }
